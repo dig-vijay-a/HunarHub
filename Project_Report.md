@@ -58,5 +58,13 @@ HunarHub solves this by providing a hyper-localized, premium digital marketplace
 - Implementation of email notifications for order status updates.
 - Advanced geographical search to find artisans within a specific radius of the customer's location.
 
-## 8. Conclusion
+## 8. Test Credentials
+To evaluate the platform, use the following seeded credentials. All passwords are **`password123`**.
+
+- **Admin Account:** `admin@hunarhub.com`
+- **Customer Account:** `customer@hunarhub.com`
+- **Artisan Account 1:** `ravi@hunarhub.com` (Pottery)
+- **Artisan Account 2:** `sunita@hunarhub.com` (Tailoring)
+
+## 9. Conclusion
 HunarHub successfully bridges the gap between traditional craftsmanship and the modern digital economy. It is a robust, scalable Minimum Viable Product (MVP) that demonstrates strong proficiency in full-stack web development, UI/UX design principles, and real-time data handling.
