@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useUI } from '@/context/UIContext';
@@ -12,6 +12,19 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { showAlert } = useUI();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    const storedUser = localStorage.getItem('userInfo');
+    if (storedUser) {
+      try {
+        const data = JSON.parse(storedUser);
+        if (data.role === 'admin') router.push('/admin');
+        else if (data.role === 'entrepreneur') router.push('/dashboard');
+        else router.push('/marketplace');
+      } catch (err) {}
+    }
+  }, [router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();

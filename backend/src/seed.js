@@ -5,6 +5,9 @@ const EntrepreneurProfile = require('./models/EntrepreneurProfile');
 const Product = require('./models/Product');
 const Service = require('./models/Service');
 const Category = require('./models/Category');
+const Order = require('./models/Order');
+const Review = require('./models/Review');
+const Message = require('./models/Message');
 const bcrypt = require('bcryptjs');
 
 dotenv.config();
@@ -23,6 +26,9 @@ const seedDB = async () => {
     await Product.deleteMany();
     await Service.deleteMany();
     await Category.deleteMany();
+    await Order.deleteMany();
+    await Review.deleteMany();
+    await Message.deleteMany();
 
     // 1. Categories
     const cat1 = await Category.create({ name: 'Pottery' });
@@ -64,7 +70,7 @@ const seedDB = async () => {
     });
 
     // 5. Products & Services for Ent 1
-    await Product.create({
+    const prod1 = await Product.create({
       entrepreneur: entProfile1._id,
       name: 'Handpainted Clay Vase',
       description: 'A beautiful 10-inch vase for your living room.',
@@ -100,13 +106,50 @@ const seedDB = async () => {
       isAvailable: true
     });
 
-    await Service.create({
+    const srv1 = await Service.create({
       entrepreneur: entProfile2._id,
       name: 'Dress Alterations',
       description: 'Custom fitting and hemming for your dresses.',
       basePrice: 30,
       duration: '1 hour',
       imageUrl: 'https://images.unsplash.com/photo-1512438258663-ce20ecf383eb?w=500'
+    });
+
+    // 7. Orders
+    await Order.create({
+      customer: customer._id,
+      entrepreneur: entProfile1._id,
+      product: prod1._id,
+      quantity: 2,
+      totalPrice: 50,
+      status: 'completed'
+    });
+
+    // 8. Reviews
+    await Review.create({
+      customer: customer._id,
+      entrepreneur: entProfile1._id,
+      rating: 5,
+      comment: 'Absolutely love the vase! Beautiful craftsmanship.'
+    });
+
+    await Review.create({
+      customer: customer._id,
+      entrepreneur: entProfile2._id,
+      rating: 4,
+      comment: 'Great tailoring, fits perfectly.'
+    });
+
+    // 9. Messages
+    await Message.create({
+      sender: customer._id,
+      receiver: entUser1._id,
+      content: 'Hi Ravi, can you make a custom clay pot for me?'
+    });
+    await Message.create({
+      sender: entUser1._id,
+      receiver: customer._id,
+      content: 'Hello! Yes, I would love to. What size are you looking for?'
     });
 
     console.log('Dummy Data Seeded Successfully!');

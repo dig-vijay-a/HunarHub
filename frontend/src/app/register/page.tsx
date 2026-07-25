@@ -17,6 +17,19 @@ export default function Register() {
   const [stats, setStats] = useState({ entrepreneurCount: 0, satisfactionPercentage: 100 });
   const [statsLoading, setStatsLoading] = useState(true);
 
+  // Redirect if already logged in
+  useEffect(() => {
+    const storedUser = localStorage.getItem('userInfo');
+    if (storedUser) {
+      try {
+        const data = JSON.parse(storedUser);
+        if (data.role === 'admin') router.push('/admin');
+        else if (data.role === 'entrepreneur') router.push('/dashboard');
+        else router.push('/marketplace');
+      } catch (err) {}
+    }
+  }, [router]);
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
