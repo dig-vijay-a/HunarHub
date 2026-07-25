@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { io, Socket } from 'socket.io-client';
 import { useUI } from '@/context/UIContext';
 
-export default function Messages() {
+function MessagesContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialUserId = searchParams.get('userId');
@@ -288,5 +288,13 @@ export default function Messages() {
 
       </div>
     </div>
+  );
+}
+
+export default function Messages() {
+  return (
+    <Suspense fallback={<div className="flex-1 bg-gray-50 p-6 flex items-center justify-center font-bold text-gray-500">Loading Messages...</div>}>
+      <MessagesContent />
+    </Suspense>
   );
 }
