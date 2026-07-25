@@ -10,6 +10,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const router = useRouter();
   const { showAlert } = useUI();
 
@@ -22,7 +23,11 @@ export default function Login() {
         if (data.role === 'admin') router.push('/admin');
         else if (data.role === 'entrepreneur') router.push('/dashboard');
         else router.push('/marketplace');
-      } catch (err) {}
+      } catch (err) {
+        setIsCheckingAuth(false);
+      }
+    } else {
+      setIsCheckingAuth(false);
     }
   }, [router]);
 
@@ -51,6 +56,8 @@ export default function Login() {
       setLoading(false);
     }
   };
+
+  if (isCheckingAuth) return <div className="min-h-screen bg-white flex items-center justify-center"></div>;
 
   return (
     <div className="flex-1 flex flex-col lg:flex-row font-sans relative overflow-hidden bg-white">

@@ -16,6 +16,7 @@ export default function Register() {
   const { showAlert } = useUI();
   const [stats, setStats] = useState({ entrepreneurCount: 0, satisfactionPercentage: 100 });
   const [statsLoading, setStatsLoading] = useState(true);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   // Redirect if already logged in
   useEffect(() => {
@@ -26,7 +27,11 @@ export default function Register() {
         if (data.role === 'admin') router.push('/admin');
         else if (data.role === 'entrepreneur') router.push('/dashboard');
         else router.push('/marketplace');
-      } catch (err) {}
+      } catch (err) {
+        setIsCheckingAuth(false);
+      }
+    } else {
+      setIsCheckingAuth(false);
     }
   }, [router]);
 
@@ -71,6 +76,8 @@ export default function Register() {
       setLoading(false);
     }
   };
+
+  if (isCheckingAuth) return <div className="min-h-screen bg-white flex items-center justify-center"></div>;
 
   return (
     <div className="flex-1 flex flex-col lg:flex-row font-sans relative overflow-hidden bg-white">
