@@ -23,10 +23,10 @@ export default function AdminDashboard() {
     }
     try {
       const [statsRes, entRes, dispRes, catRes] = await Promise.all([
-        fetch('http://localhost:5000/api/admin/stats', { headers: { 'Authorization': `Bearer ${userInfo.token}` } }),
-        fetch('http://localhost:5000/api/admin/entrepreneurs', { headers: { 'Authorization': `Bearer ${userInfo.token}` } }),
-        fetch('http://localhost:5000/api/disputes', { headers: { 'Authorization': `Bearer ${userInfo.token}` } }),
-        fetch('http://localhost:5000/api/categories')
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/admin/stats`, { headers: { 'Authorization': `Bearer ${userInfo.token}` } }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/admin/entrepreneurs`, { headers: { 'Authorization': `Bearer ${userInfo.token}` } }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/disputes`, { headers: { 'Authorization': `Bearer ${userInfo.token}` } }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/categories`)
       ]);
       if (statsRes.ok) setStats(await statsRes.json());
       if (entRes.ok) setEntrepreneurs(await entRes.json());
@@ -46,7 +46,7 @@ export default function AdminDashboard() {
   const verifyEntrepreneur = async (id: string) => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
     try {
-      await fetch(`http://localhost:5000/api/admin/entrepreneurs/${id}/verify`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}`}/api/admin/entrepreneurs/${id}/verify`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${userInfo.token}` }
       });
@@ -63,7 +63,7 @@ export default function AdminDashboard() {
     
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
     try {
-      await fetch(`http://localhost:5000/api/admin/entrepreneurs/${id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}`}/api/admin/entrepreneurs/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${userInfo.token}` }
       });
@@ -77,7 +77,7 @@ export default function AdminDashboard() {
   const resolveDispute = async (id: string) => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
     try {
-      await fetch(`http://localhost:5000/api/disputes/${id}/resolve`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}`}/api/disputes/${id}/resolve`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${userInfo.token}` }
       });
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
     if (!newCategoryName.trim()) return;
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
     try {
-      const res = await fetch('http://localhost:5000/api/categories', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/categories`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userInfo.token}` },
         body: JSON.stringify({ name: newCategoryName.trim() })
@@ -116,7 +116,7 @@ export default function AdminDashboard() {
     
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
     try {
-      const res = await fetch(`http://localhost:5000/api/categories/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}`}/api/categories/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${userInfo.token}` }
       });

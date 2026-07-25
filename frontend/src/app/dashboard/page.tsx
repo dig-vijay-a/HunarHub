@@ -30,9 +30,9 @@ export default function Dashboard() {
     }
     try {
       const [profileRes, ordersRes, catRes] = await Promise.all([
-        fetch('http://localhost:5000/api/profile', { headers: { 'Authorization': `Bearer ${userInfo.token}` } }),
-        fetch('http://localhost:5000/api/orders/entrepreneur', { headers: { 'Authorization': `Bearer ${userInfo.token}` } }),
-        fetch('http://localhost:5000/api/categories')
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/profile`, { headers: { 'Authorization': `Bearer ${userInfo.token}` } }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/orders/entrepreneur`, { headers: { 'Authorization': `Bearer ${userInfo.token}` } }),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/categories`)
       ]);
       
       if (profileRes.ok) {
@@ -56,7 +56,7 @@ export default function Dashboard() {
   const toggleAvailability = async () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
     try {
-      const res = await fetch(`http://localhost:5000/api/profile`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}`}/api/profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userInfo.token}` },
         body: JSON.stringify({ isAvailable: !profile.isAvailable })
@@ -72,7 +72,7 @@ export default function Dashboard() {
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
     try {
       const skillsArray = editProfileData.skills.split(',').map(s => s.trim()).filter(s => s);
-      const res = await fetch(`http://localhost:5000/api/profile`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}`}/api/profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userInfo.token}` },
         body: JSON.stringify({ ...editProfileData, skills: skillsArray })
@@ -91,7 +91,7 @@ export default function Dashboard() {
     const endpoint = type === 'order' ? `/api/orders/${id}/status` : `/api/orders/requests/${id}/status`;
     
     try {
-      await fetch(`http://localhost:5000${endpoint}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}`}${endpoint}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userInfo.token}` },
         body: JSON.stringify({ status })
@@ -109,7 +109,7 @@ export default function Dashboard() {
     const body = type === 'product' ? newProduct : newService;
 
     try {
-      await fetch(`http://localhost:5000${endpoint}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}`}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userInfo.token}` },
         body: JSON.stringify(body)

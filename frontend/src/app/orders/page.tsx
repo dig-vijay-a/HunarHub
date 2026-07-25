@@ -19,7 +19,7 @@ export default function MyOrders() {
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/orders/myorders', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/orders/myorders`, {
         headers: {
           'Authorization': `Bearer ${userInfo.token}`,
         }
@@ -46,7 +46,7 @@ export default function MyOrders() {
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
     try {
-      const res = await fetch('http://localhost:5000/api/disputes', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/disputes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userInfo.token}` },
         body: JSON.stringify({ entrepreneurId, orderType, orderId, reason })

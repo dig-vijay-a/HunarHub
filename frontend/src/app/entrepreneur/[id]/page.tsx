@@ -22,8 +22,8 @@ export default function EntrepreneurProfile() {
   const fetchData = async () => {
     try {
       const [profRes, revRes] = await Promise.all([
-        fetch(`http://localhost:5000/api/entrepreneurs/${id}`),
-        fetch(`http://localhost:5000/api/reviews/entrepreneur/${id}`)
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}`}/api/entrepreneurs/${id}`),
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}`}/api/reviews/entrepreneur/${id}`)
       ]);
       if (profRes.ok) {
         const data = await profRes.json();
@@ -49,7 +49,7 @@ export default function EntrepreneurProfile() {
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
     if (!userInfo.token) return router.push('/login');
     try {
-      await fetch('http://localhost:5000/api/orders/products', {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/orders/products`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userInfo.token}` },
         body: JSON.stringify({ productId, quantity: 1 })
@@ -64,7 +64,7 @@ export default function EntrepreneurProfile() {
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
     if (!userInfo.token) return router.push('/login');
     try {
-      await fetch('http://localhost:5000/api/orders/services', {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/orders/services`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userInfo.token}` },
         body: JSON.stringify({ serviceId, details: 'I need this service ASAP.' })
@@ -80,7 +80,7 @@ export default function EntrepreneurProfile() {
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
     if (!userInfo.token) return router.push('/login');
     try {
-      const res = await fetch(`http://localhost:5000/api/reviews`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}`}/api/reviews`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userInfo.token}` },
         body: JSON.stringify({ entrepreneurId: profile._id, rating, comment })

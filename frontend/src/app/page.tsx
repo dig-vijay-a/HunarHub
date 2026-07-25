@@ -23,7 +23,7 @@ export default function Home() {
     // 2. Fetch real categories dynamically for the landing page
     const fetchCategories = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/categories');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/categories`);
         if (res.ok) {
           const data = await res.json();
           setCategories(data);

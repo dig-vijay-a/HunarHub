@@ -18,7 +18,7 @@ export default function Marketplace() {
   const [categoriesData, setCategoriesData] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/categories')
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/categories`)
       .then(res => res.json())
       .then(data => setCategoriesData(data))
       .catch(console.error);
@@ -34,7 +34,7 @@ export default function Marketplace() {
       if (minPrice) params.append('minPrice', minPrice);
       if (maxPrice) params.append('maxPrice', maxPrice);
 
-      const res = await fetch(`http://localhost:5000/api/marketplace/${filter}?${params.toString()}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}`}/api/marketplace/${filter}?${params.toString()}`);
       if (res.ok) {
         const data = await res.json();
         setItems(data);
@@ -69,7 +69,7 @@ export default function Marketplace() {
       if (!details) return;
 
       try {
-        const res = await fetch('http://localhost:5000/api/orders/services', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/orders/services`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userInfo.token}` },
           body: JSON.stringify({ serviceId: item._id, details })
@@ -89,7 +89,7 @@ export default function Marketplace() {
       }
 
       try {
-        const res = await fetch('http://localhost:5000/api/orders/products', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/orders/products`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${userInfo.token}` },
           body: JSON.stringify({ productId: item._id, quantity })

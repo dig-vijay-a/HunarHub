@@ -31,7 +31,7 @@ export default function Messages() {
     const parsedUser = JSON.parse(storedUser);
     setUserInfo(parsedUser);
 
-    const newSocket = io('http://localhost:5000');
+    const newSocket = io(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000');
     setSocket(newSocket);
 
     newSocket.emit('join_room', parsedUser._id);
@@ -47,7 +47,7 @@ export default function Messages() {
 
     const fetchContacts = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/chat/contacts', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/chat/contacts`, {
           headers: { 'Authorization': `Bearer ${userInfo.token}` }
         });
         if (res.ok) {
@@ -85,7 +85,7 @@ export default function Messages() {
 
     const fetchMessages = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/chat/${activeContact._id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}`}/api/chat/${activeContact._id}`, {
           headers: { 'Authorization': `Bearer ${userInfo.token}` }
         });
         if (res.ok) {
@@ -153,7 +153,7 @@ export default function Messages() {
     // If this is a new contact that wasn't in our list, refresh contacts after a short delay
     if (!contacts.find(c => c._id === activeContact._id)) {
       setTimeout(() => {
-        fetch('http://localhost:5000/api/chat/contacts', {
+        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/chat/contacts`, {
           headers: { 'Authorization': `Bearer ${userInfo.token}` }
         }).then(res => res.json()).then(data => setContacts(data));
       }, 500);
